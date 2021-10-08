@@ -114,8 +114,8 @@ function App() {
   function playSequence() {
     setColor("");
     setParagraph("");
-    // If score is 10 (or somehow above), the player has won
-    if (game.current.score >= 10) {
+    // If score is 5 (or somehow above), the player has won
+    if (game.current.score >= 5) {
       winScreen();
     } else {
       $("#btn-start").css("background-color", colors.greenOn);
