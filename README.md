@@ -1,13 +1,6 @@
-# UFRJ-2021.1 EEL816
 
-Repositório para o projeto _Simon Says_ desenvolvido durante a matéria EEL816 - Processamento de Voz, ministrada pelo professor Fernando Gil.
+Development of a voice-controlled interactive game model,
+inspired by the old Simon Says game, where the player is challenged to
+memorize and repeat color sequences.
 
----
-
-## Objetivo
-
-Desenvolvimento de um modelo de jogo interativo comandado por voz,
-inspirado no antigo jogo Simon Says, onde o jogador é desafiado a
-memorizar e repetir sequências de cores.
-
-O reconhecimento de voz e transcrição para texto em tempo real foi feito usando a API do google [speech-to-text](https://cloud.google.com/speech-to-text)
+Real-time voice recognition and transcription to text was done using google API [speech-to-text](https://cloud.google.com/speech-to-text)
