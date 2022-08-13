@@ -1,33 +1,19 @@
 import { useState, useEffect, useRef } from "react";
-import "./App.css";
+import "./App.scss";
 import microphoneImage from "./assets/images/microphone.svg";
 import win from "./assets/audios/win.mp3";
 import lose from "./assets/audios/lose.mp3";
 import $ from "jquery";
-import classNames from "classnames";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 
 function App() {
   const { transcript, resetTranscript } = useSpeechRecognition();
-  const [color, setColor] = useState("");
+  const [hidden, setHidden] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [paragraph, setParagraph] = useState("");
-  const [blueLight, setBlueLight] = useState(false);
-  const [redLight, setRedLight] = useState(false);
-  const [yellowLight, setYellowLight] = useState(false);
-  const [greenLight, setGreenLight] = useState(false);
-  const [gameActive, setGameActive] = useState(false);
-  const game = useRef({
-    status: "off",
-    strict: "off",
-    score: "--",
-    gameSequence: [],
-    playerSequence: [],
-    timestep: 1000,
-    allowPress: true,
-  });
+  const [volume, setVolume] = useState(0);
 
   let lang;
   const queryString = window.location.search;
@@ -42,7 +28,7 @@ function App() {
     setParagraph("");
     resetTranscript();
     SpeechRecognition.startListening({
-      continuous: true,
+      continuous: false,
       language: lang,
     });
   };
@@ -69,286 +55,152 @@ function App() {
     5: new Audio(audio[5]),
   };
 
-  let colors = {
-    blueOn: "#7baefe",
-    blueOff: "#2659a9",
-    redOn: "#fb7b7b",
-    redOff: "#d62626",
-    yellowOn: "#fff57b",
-    yellowOff: "#eec026",
-    greenOn: "#7bfb99",
-    greenOff: "#26b644",
-  };
-
-  let counter = 0;
-
-  // Reset game to initial state
-  function resetGame() {
-    game.current = {
-      status: "off",
-      strict: "off",
-      score: "--",
-      gameSequence: [],
-      playerSequence: [],
-      timestep: 1000,
-      allowPress: true,
-    };
-    counter = 0;
-    setGameActive(false);
-    setParagraph("");
-    setColor("");
-    $("#score-screen").attr("placeholder", game.current.score);
-    $(".strict-led").css("background-color", "#460000");
-  }
-
-  // Add a number to the game sequence
-  function addNumber() {
-    game.current.gameSequence.push(Math.floor(Math.random() * 4));
-    game.current.score === "--"
-      ? (game.current.score = 1)
-      : (game.current.score += 1);
-    $("#score-screen").attr("placeholder", game.current.score);
-  }
-
-  // Play the game sequence
-  function playSequence() {
-    setColor("");
-    setParagraph("");
-    // If score is 5 (or somehow above), the player has won
-    if (game.current.score >= 5) {
-      winScreen();
-    } else {
-      $("#btn-start").css("background-color", colors.greenOn);
-      game.current.allowPress = false;
-      // Timestep gets shorter with each addition to the sequence
-      game.current.timestep = 1000 - game.current.gameSequence.length * 25;
-      game.current.gameSequence.forEach(function (button, counter) {
-        setTimeout(function () {
-          playSound(button);
-        }, game.current.timestep * (counter + 1));
-      });
-      setTimeout(function () {
-        game.current.allowPress = true;
-        $("#btn-start").css("background-color", colors.greenOff);
-      }, game.current.timestep * (game.current.gameSequence.length + 1));
-    }
-  }
-
-  // Check if player's input matches the game sequence
-  function checkSequence() {
-    const index = game.current.playerSequence.length - 1;
-    // If they do not match, run wrongButton function
-    if (
-      game.current.playerSequence[index] != game.current.gameSequence[index]
-    ) {
-      game.current.playerSequence = [];
-      wrongButton();
-      return false;
-    }
-    // If they do match and the sequences are the same length, add another number to the sequence
-    if (
-      game.current.playerSequence[index] === game.current.gameSequence[index] &&
-      game.current.playerSequence.length === game.current.gameSequence.length
-    ) {
-      game.current.playerSequence = [];
-      game.current.allowPress = false;
-      setTimeout(function () {
-        addNumber();
-        playSequence();
-      }, 1000);
-    }
-    // If they match but the lengths are not the same, do nothing
-    else if (
-      game.current.playerSequence[index] === game.current.gameSequence[index]
-    ) {
-      return true;
-    }
-    // Otherwise, assume wrong button input
-    else {
-      game.current.playerSequence = [];
-      wrongButton();
-      return false;
-    }
-  }
-
-  function wrongButton() {
-    setParagraph("");
-    game.current.allowPress = false;
-    $("#score-screen").attr("placeholder", "X");
-    sounds[5].play();
-
-    setTimeout(function () {
-      resetGame();
-    }, 4000);
-  }
-
-  // Play sound function - also animates the button flashes
   function playSound(btnNum) {
-    switch (btnNum) {
-      case 0:
-        setBlueLight(true);
-        setTimeout(() => {
-          setBlueLight(false);
-        }, 400);
-        break;
-      case 1:
-        setRedLight(true);
-        setTimeout(() => {
-          setRedLight(false);
-        }, 400);
-        break;
-      case 2:
-        setYellowLight(true);
-        setTimeout(() => {
-          setYellowLight(false);
-        }, 400);
-        break;
-      case 3:
-        setGreenLight(true);
-        setTimeout(() => {
-          setGreenLight(false);
-        }, 400);
-        break;
-    }
     sounds[btnNum].play();
   }
 
-  function winScreen() {
-    $("#score-screen").attr("placeholder", ":)");
-    playSound(4);
-    const cycle = setInterval(function () {
-      setBlueLight(true);
-      setTimeout(() => {
-        setBlueLight(false);
-      }, 400);
-      setRedLight(true);
-      setTimeout(() => {
-        setRedLight(false);
-      }, 400);
-      setYellowLight(true);
-      setTimeout(() => {
-        setYellowLight(false);
-      }, 400);
-      setGreenLight(true);
-      setTimeout(() => {
-        setGreenLight(false);
-      }, 400);
-    }, 400);
-    setTimeout(function () {
-      clearInterval(cycle);
-      resetGame();
-    }, 2800);
+  function SoundMeter(context) {
+    this.context = context;
+    this.instant = 0.0;
+    this.script = context.createScriptProcessor(2048, 1, 1);
+    const that = this;
+    this.script.onaudioprocess = function (event) {
+      const input = event.inputBuffer.getChannelData(0);
+      let i;
+      let sum = 0.0;
+      for (i = 0; i < input.length; ++i) {
+        sum += input[i] * input[i];
+      }
+      that.instant = Math.sqrt(sum / input.length) * 100;
+      console.log(that.instant);
+      setVolume(that.instant);
+    };
   }
 
-  const handleStart = () => {
-    if (game.current.allowPress && !gameActive) {
-      setGameActive(true);
-      addNumber();
-      playSequence();
-    }
-  };
-
-  const handleReset = () => {
-    if (game.current.allowPress) {
-      resetGame();
-    }
-  };
-
-  const handleGameButton = (pId) => {
-    if (game.current.allowPress) {
-      const id = pId;
-      const button = parseInt(id.substr(id.length - 1));
-      playSound(button);
-      if (gameActive) {
-        game.current.playerSequence.push(button);
-        checkSequence();
+  SoundMeter.prototype.connectToSource = function (stream, callback) {
+    console.log("SoundMeter connecting");
+    try {
+      this.mic = this.context.createMediaStreamSource(stream);
+      this.mic.connect(this.script);
+      // necessary to make sample run, but should not be.
+      this.script.connect(this.context.destination);
+      if (typeof callback !== "undefined") {
+        callback(null);
+      }
+    } catch (e) {
+      console.error(e);
+      if (typeof callback !== "undefined") {
+        callback(e);
       }
     }
   };
 
-  const handleColorWVoice = (btnId) => {
-    handleGameButton(btnId);
-    resetTranscript();
+  SoundMeter.prototype.stop = function () {
+    console.log("SoundMeter stopping");
+    this.mic.disconnect();
+    this.script.disconnect();
   };
 
-  const handleTextColor = (wordsListened, color, index) => {
-    const firstPiece = wordsListened.slice(0, index).join(" ");
-    setColor(color);
-    setParagraph(firstPiece);
-  };
+  // Put variables in global scope to make them available to the browser console.
+  const constraints = (window.constraints = {
+    audio: true,
+    video: false,
+  });
+
+  let meterRefresh = null;
+
+  function handleSuccess(stream) {
+    // Put variables in global scope to make them available to the
+    // browser console.
+    window.stream = stream;
+    const soundMeter = (window.soundMeter = new SoundMeter(
+      window.audioContext
+    ));
+    soundMeter.connectToSource(stream, function (e) {
+      if (e) {
+        alert(e);
+        return;
+      }
+    });
+  }
+
+  function handleError(error) {
+    console.log(
+      "navigator.MediaDevices.getUserMedia error: ",
+      error.message,
+      error.name
+    );
+  }
+
+  function start() {
+    console.log("Requesting local stream");
+
+    try {
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
+      window.audioContext = new AudioContext();
+    } catch (e) {
+      alert("Web Audio API not supported.");
+    }
+
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then(handleSuccess)
+      .catch(handleError);
+
+    setIsListening(true);
+    setParagraph("");
+    resetTranscript();
+    SpeechRecognition.startListening({
+      continuous: true,
+      language: lang,
+    });
+  }
+
+  function stop() {
+    console.log("Stopping local stream");
+    window.stream.getTracks().forEach((track) => track.stop());
+    window.soundMeter.stop();
+    window.audioContext.close();
+    clearInterval(meterRefresh);
+  }
 
   const standartizeWords = (listOfWords) => {
     let resultArray = [];
     for (let i = 0; i < listOfWords.length; i++) {
       const word = listOfWords[i];
-      resultArray.push(word.toLowerCase());
+      resultArray.push(word.toUpperCase());
     }
     return resultArray;
   };
 
-  const identifyColor = (transcript) => {
+  const identifyWord = (transcript) => {
     const wordsListened = transcript.split(" ");
-    const lowerCaseWords = standartizeWords(wordsListened);
-    const indexRed = lowerCaseWords.indexOf("vermelho");
-    const indexBlue = lowerCaseWords.indexOf("azul");
-    const indexYellow = lowerCaseWords.indexOf("amarelo");
-    const indexGreen = lowerCaseWords.indexOf("verde");
-    if (indexRed !== -1) {
-      handleTextColor(lowerCaseWords, "vermelho", indexRed);
-      handleColorWVoice("btn1");
-    } else if (indexYellow !== -1) {
-      handleTextColor(lowerCaseWords, "amarelo", indexYellow);
-      handleColorWVoice("btn2");
-    } else if (indexGreen !== -1) {
-      handleTextColor(lowerCaseWords, "verde", indexGreen);
-      handleColorWVoice("btn3");
-    } else if (indexBlue !== -1) {
-      handleTextColor(lowerCaseWords, "azul", indexBlue);
-      handleColorWVoice("btn0");
-    } else {
-      setParagraph(transcript);
+    const upperCaseWords = standartizeWords(wordsListened);
+    setParagraph(upperCaseWords.join(" "));
+    console.log(upperCaseWords);
+    if (wordsListened.length === 1) {
+      stop();
+      setTimeout(() => {
+        SpeechRecognition.stopListening();
+        setIsListening(false);
+        setParagraph("");
+      }, 6000);
     }
   };
 
-  // Fire when page loads
   useEffect(() => {
-    resetGame();
-  }, []);
-
-  useEffect(() => {
-    if (gameActive && transcript !== "") {
-      identifyColor(transcript);
+    if (transcript !== "") {
+      identifyWord(transcript);
     }
   }, [transcript]);
 
   useEffect(() => {
-    if (gameActive) {
-      handleListening();
+    if (paragraph === "") {
+      setHidden(true);
+    } else {
+      setHidden(false);
     }
-  }, [gameActive]);
-
-  const blueBtn = classNames("game-btn", "top-left", {
-    btn0On: blueLight,
-  });
-
-  const redBtn = classNames("game-btn", "top-right", {
-    btn1On: redLight,
-  });
-
-  const yellowBtn = classNames("game-btn", "bottom-right", {
-    btn2On: yellowLight,
-  });
-
-  const greenBtn = classNames("game-btn", "bottom-left", {
-    btn3On: greenLight,
-  });
-
-  const colorText = classNames({
-    green: color === "verde",
-    red: color === "vermelho",
-    blue: color === "azul",
-    yellow: color === "amarelo",
-  });
+  }, [paragraph]);
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
@@ -359,74 +211,37 @@ function App() {
   }
   return (
     <div className="App">
-      <header className="heading-title">
-        <h1 className="page-title">Simon Says</h1>
-      </header>
       <main className="primary-content">
-        <div className="play-area">
-          <div
-            id="btn0"
-            onClick={() => handleGameButton("btn0")}
-            className={blueBtn}
-          ></div>
-          <div
-            id="btn1"
-            onClick={() => handleGameButton("btn1")}
-            className={redBtn}
-          ></div>
-          <div
-            id="btn2"
-            onClick={() => handleGameButton("btn2")}
-            className={yellowBtn}
-          ></div>
-          <div
-            id="btn3"
-            onClick={() => handleGameButton("btn3")}
-            className={greenBtn}
-          ></div>
-          <div className="center-circle">
-            <div className="center-panel">
-              <p className="game-title">simon</p>
-              <div className="row">
-                <div className="buttons">
-                  <label className="label" htmlFor="btn-start">
-                    START
-                  </label>
-                  <button
-                    onClick={handleStart}
-                    className="btn-small"
-                    id="btn-start"
-                  ></button>
-                </div>
-                <div className="buttons">
-                  <label className="label" htmlFor="btn-reset">
-                    RESET
-                  </label>
-                  <button
-                    onClick={handleReset}
-                    className="btn-small"
-                    id="btn-reset"
-                  ></button>
-                </div>
-              </div>
-              <input id="score-screen" placeholder="--" disabled></input>
-            </div>
-          </div>
+        <div className="tubeArea">
+          <div className="tubeFlipped"></div>
         </div>
-        <p className="transcript">
+        <div className="tubeArea">
+          <div className="tube"></div>
+        </div>
+        <p
+          className={`${hidden ? "hidden" : null} transcript ${
+            volume > 40 ? "fast" : volume > 15 && volume < 39 ? "medium" : null
+          }`}
+        >
           {paragraph}
-          <span className={colorText} id="word">
+          {/* <span className={colorText} id="word">
             {color}
-          </span>
+          </span> */}
         </p>
         <img
           className="microphone"
           src={microphoneImage}
           alt="microphone"
-          onClick={handleListening}
+          // onClick={handleListening}
+          onClick={start}
         ></img>
+        <h1 className="page-title">Diga algo!</h1>
         {isListening && (
-          <button className="btn" onClick={stopHandle}>
+          <button
+            className="btn"
+            // onClick={stopHandle}
+            onClick={stop}
+          >
             Stop
           </button>
         )}

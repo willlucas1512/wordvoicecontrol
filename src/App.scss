@@ -1,0 +1,291 @@
+html,
+.App {
+  background-color: black;
+  width: 100%;
+  height: 100%;
+}
+
+.page-title {
+  font-weight: 400;
+  font-size: 40px;
+  margin-bottom: 0px;
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  color: #ffffff;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.description {
+  font-size: 16px;
+}
+.primary-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.microphone {
+  cursor: pointer;
+  max-width: 120px;
+  max-height: 120px;
+}
+
+.btn {
+  border: 1px solid #ffffff;
+  padding: 8px 16px;
+  margin-top: 16px;
+  outline: none;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 25px;
+  box-shadow: 0px 0px 10px 5px #ffffff1a;
+  max-width: 80px;
+  max-height: 80px;
+}
+
+button,
+label,
+input {
+  -webkit-appearance: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+p {
+  text-align: center;
+}
+
+.tubeArea {
+  height: 400px;
+  width: 400px;
+}
+.tube {
+  z-index: 4;
+  width: 200px;
+  height: 400px;
+  position: absolute;
+  bottom: 0;
+  left: 85%;
+  transform: translateX(-50%);
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(
+    to right,
+    #579c66,
+    #579c66 5px,
+    #6dad7b 15px,
+    #e9ffe8 33px,
+    #9dd591 50px,
+    #6bb765 100px,
+    #142e16 100%
+  );
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: 5;
+    left: -10px;
+    height: 8px;
+    width: 220px;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.1) 98%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    left: -10px;
+    height: 50px;
+    width: 220px;
+    border-radius: 6px;
+    border-bottom: solid 7px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(
+      to right,
+      #579c66,
+      #579c66 5px,
+      #6dad7b 18px,
+      #e9ffe8 36px,
+      #9dd591 53px,
+      #6bb765 103px,
+      #142e16 100%
+    );
+  }
+}
+.tubeFlipped {
+  z-index: 2;
+  width: 200px;
+  height: 400px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(90deg);
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(
+    to right,
+    #579c66,
+    #579c66 5px,
+    #6dad7b 15px,
+    #e9ffe8 33px,
+    #9dd591 50px,
+    #6bb765 100px,
+    #142e16 100%
+  );
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    left: -10px;
+    height: 8px;
+    width: 220px;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.1) 98%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    left: -10px;
+    height: 50px;
+    width: 220px;
+    border-radius: 6px;
+    border-bottom: solid 7px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(
+      to right,
+      #579c66,
+      #579c66 5px,
+      #6dad7b 18px,
+      #e9ffe8 36px,
+      #9dd591 53px,
+      #6bb765 103px,
+      #142e16 100%
+    );
+  }
+}
+
+.transcript {
+  position: absolute;
+  z-index: 1;
+  left: 250px;
+  font-family: "Varela Round", sans-serif;
+  color: #ffffff;
+  font-weight: 300;
+  font-size: 28px;
+  animation: falling ease-out 1 5s;
+}
+
+.hidden {
+  display: none;
+}
+
+.fast {
+  display: inline;
+  animation-duration: 1s;
+}
+.medium {
+  display: inline;
+  animation-duration: 3s;
+}
+.slow {
+  display: inline;
+  animation-duration: 5s;
+}
+
+@keyframes falling {
+  0% {
+    left: 25%;
+    bottom: 550px;
+  }
+  5% {
+    left: 28%;
+    bottom: 540px;
+  }
+  10% {
+    left: 30%;
+    bottom: 535px;
+  }
+  15% {
+    left: 33%;
+    bottom: 530px;
+  }
+  20% {
+    left: 35%;
+    bottom: 520px;
+  }
+  25% {
+    left: 38%;
+    bottom: 510px;
+  }
+  30% {
+    left: 40%;
+    bottom: 500px;
+  }
+  35% {
+    left: 43%;
+    bottom: 495px;
+  }
+  40% {
+    left: 45%;
+    bottom: 490px;
+  }
+  45% {
+    left: 48%;
+    bottom: 480px;
+  }
+  50% {
+    left: 50%;
+    bottom: 470px;
+  }
+  55% {
+    left: 53%;
+    bottom: 460px;
+  }
+  60% {
+    left: 55%;
+    bottom: 450px;
+  }
+  65% {
+    left: 58%;
+    bottom: 440px;
+  }
+  70% {
+    left: 60%;
+    bottom: 430px;
+  }
+  75% {
+    left: 63%;
+    bottom: 425px;
+  }
+  80% {
+    left: 65%;
+    bottom: 420px;
+  }
+  85% {
+    left: 68%;
+    bottom: 415px;
+  }
+  90% {
+    left: 70%;
+    bottom: 410px;
+  }
+  95% {
+    left: 75%;
+    bottom: 405px;
+  }
+  100% {
+    left: 80%;
+    bottom: 350px;
+  }
+}
