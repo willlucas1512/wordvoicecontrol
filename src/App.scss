@@ -67,7 +67,7 @@ p {
 .tube {
   z-index: 4;
   width: 200px;
-  height: 400px;
+  height: 300px;
   position: absolute;
   bottom: 0;
   left: 85%;
@@ -192,7 +192,7 @@ p {
 
 .fast {
   display: inline;
-  animation-duration: 1s;
+  animation-duration: 2s;
 }
 .medium {
   display: inline;
@@ -262,30 +262,30 @@ p {
   }
   70% {
     left: 60%;
-    bottom: 430px;
+    bottom: 400px;
   }
   75% {
     left: 63%;
-    bottom: 425px;
+    bottom: 375px;
   }
   80% {
     left: 65%;
-    bottom: 420px;
+    bottom: 350px;
   }
   85% {
-    left: 68%;
-    bottom: 415px;
+    left: 70%;
+    bottom: 325px;
   }
   90% {
-    left: 70%;
-    bottom: 410px;
+    left: 75%;
+    bottom: 300px;
   }
   95% {
-    left: 75%;
-    bottom: 405px;
+    left: 80%;
+    bottom: 275px;
   }
   100% {
-    left: 80%;
-    bottom: 350px;
+    left: 85%;
+    bottom: 250px;
   }
 }

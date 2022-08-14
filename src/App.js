@@ -1,16 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import "./App.scss";
 import microphoneImage from "./assets/images/microphone.svg";
-import win from "./assets/audios/win.mp3";
-import lose from "./assets/audios/lose.mp3";
-import $ from "jquery";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 
 function App() {
   const { transcript, resetTranscript } = useSpeechRecognition();
-  const [hidden, setHidden] = useState(false);
+  const [hidden, setHidden] = useState(true);
   const [isListening, setIsListening] = useState(false);
   const [paragraph, setParagraph] = useState("");
   const [volume, setVolume] = useState(0);
@@ -37,28 +34,6 @@ function App() {
     SpeechRecognition.stopListening();
     setParagraph("");
   };
-
-  let audio = [
-    "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3",
-    "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
-    "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
-    "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3",
-    win,
-    lose,
-  ];
-  let sounds = {
-    0: new Audio(audio[0]),
-    1: new Audio(audio[1]),
-    2: new Audio(audio[2]),
-    3: new Audio(audio[3]),
-    4: new Audio(audio[4]),
-    5: new Audio(audio[5]),
-  };
-
-  function playSound(btnNum) {
-    sounds[btnNum].play();
-  }
-
   function SoundMeter(context) {
     this.context = context;
     this.instant = 0.0;
@@ -73,7 +48,7 @@ function App() {
       }
       that.instant = Math.sqrt(sum / input.length) * 100;
       console.log(that.instant);
-      setVolume(that.instant);
+      that.instant > 10 && volume < 10 && setVolume(that.instant);
     };
   }
 
@@ -101,7 +76,6 @@ function App() {
     this.script.disconnect();
   };
 
-  // Put variables in global scope to make them available to the browser console.
   const constraints = (window.constraints = {
     audio: true,
     video: false,
@@ -110,8 +84,6 @@ function App() {
   let meterRefresh = null;
 
   function handleSuccess(stream) {
-    // Put variables in global scope to make them available to the
-    // browser console.
     window.stream = stream;
     const soundMeter = (window.soundMeter = new SoundMeter(
       window.audioContext
@@ -184,6 +156,7 @@ function App() {
         SpeechRecognition.stopListening();
         setIsListening(false);
         setParagraph("");
+        setVolume(0);
       }, 6000);
     }
   };
@@ -195,10 +168,22 @@ function App() {
   }, [transcript]);
 
   useEffect(() => {
-    if (paragraph === "") {
-      setHidden(true);
-    } else {
+    if (volume > 10) {
       setHidden(false);
+    } else {
+      setHidden(true);
+    }
+  }, [volume]);
+
+  useEffect(() => {
+    if (paragraph !== "") {
+      setTimeout(
+        () => {
+          let utterance = new SpeechSynthesisUtterance(paragraph);
+          speechSynthesis.speak(utterance);
+        },
+        volume > 31 ? 2000 : volume > 10 && volume < 30 ? 3000 : 5000
+      );
     }
   }, [paragraph]);
 
@@ -220,28 +205,20 @@ function App() {
         </div>
         <p
           className={`${hidden ? "hidden" : null} transcript ${
-            volume > 40 ? "fast" : volume > 15 && volume < 39 ? "medium" : null
+            volume > 31 ? "fast" : volume > 10 && volume < 30 ? "medium" : null
           }`}
         >
           {paragraph}
-          {/* <span className={colorText} id="word">
-            {color}
-          </span> */}
         </p>
         <img
           className="microphone"
           src={microphoneImage}
           alt="microphone"
-          // onClick={handleListening}
           onClick={start}
         ></img>
         <h1 className="page-title">Diga algo!</h1>
         {isListening && (
-          <button
-            className="btn"
-            // onClick={stopHandle}
-            onClick={stop}
-          >
+          <button className="btn" onClick={stop}>
             Stop
           </button>
         )}
