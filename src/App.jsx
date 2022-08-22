@@ -1,39 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.scss";
 import microphoneImage from "./assets/images/microphone.svg";
+import noSupport from "./assets/images/sad.png";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 
 function App() {
   const { transcript, resetTranscript } = useSpeechRecognition();
-  const [hidden, setHidden] = useState(true);
   const [isListening, setIsListening] = useState(false);
   const [paragraph, setParagraph] = useState("");
   const [volume, setVolume] = useState(0);
-
+  const [hidden, setHidden] = useState(true);
+  const paragraphRef = useRef("");
   let lang;
   const queryString = window.location.search;
-  if (queryString) {
-    lang = queryString.split("?")[1];
-  } else {
-    lang = "pt-br";
-  }
+  queryString ? (lang = queryString.split("?")[1]) : (lang = "pt-br");
 
-  const handleListening = () => {
-    setIsListening(true);
-    setParagraph("");
-    resetTranscript();
-    SpeechRecognition.startListening({
-      continuous: false,
-      language: lang,
-    });
-  };
-  const stopHandle = () => {
-    setIsListening(false);
-    SpeechRecognition.stopListening();
-    setParagraph("");
-  };
   function SoundMeter(context) {
     this.context = context;
     this.instant = 0.0;
@@ -48,7 +31,7 @@ function App() {
       }
       that.instant = Math.sqrt(sum / input.length) * 100;
       console.log(that.instant);
-      that.instant > 10 && volume < 10 && setVolume(that.instant);
+      that.instant > 10 && setVolume(that.instant);
     };
   }
 
@@ -104,7 +87,7 @@ function App() {
     );
   }
 
-  function start() {
+  function startVolumeMeter() {
     console.log("Requesting local stream");
 
     try {
@@ -118,17 +101,9 @@ function App() {
       .getUserMedia(constraints)
       .then(handleSuccess)
       .catch(handleError);
-
-    setIsListening(true);
-    setParagraph("");
-    resetTranscript();
-    SpeechRecognition.startListening({
-      continuous: true,
-      language: lang,
-    });
   }
 
-  function stop() {
+  function stopVolumeMeter() {
     console.log("Stopping local stream");
     window.stream.getTracks().forEach((track) => track.stop());
     window.soundMeter.stop();
@@ -136,95 +111,108 @@ function App() {
     clearInterval(meterRefresh);
   }
 
-  const standartizeWords = (listOfWords) => {
-    let resultArray = [];
-    for (let i = 0; i < listOfWords.length; i++) {
-      const word = listOfWords[i];
-      resultArray.push(word.toUpperCase());
-    }
-    return resultArray;
+  const handleClick = () => {
+    setIsListening(true);
+    SpeechRecognition.startListening({
+      continuous: false,
+      language: lang,
+    });
+    startVolumeMeter();
   };
 
-  const identifyWord = (transcript) => {
-    const wordsListened = transcript.split(" ");
-    const upperCaseWords = standartizeWords(wordsListened);
-    setParagraph(upperCaseWords.join(" "));
-    console.log(upperCaseWords);
-    if (wordsListened.length === 1) {
-      stop();
-      setTimeout(() => {
-        SpeechRecognition.stopListening();
-        setIsListening(false);
-        setParagraph("");
-        setVolume(0);
-      }, 6000);
-    }
+  const finishPlay = () => {
+    let utterance = new SpeechSynthesisUtterance(paragraphRef.current);
+    utterance.lang = "pt-BR";
+    speechSynthesis.speak(utterance);
+    setParagraph("");
+    paragraphRef.current = "";
+    setVolume(0);
+    setHidden(true);
   };
 
   useEffect(() => {
-    if (transcript !== "") {
-      identifyWord(transcript);
-    }
-  }, [transcript]);
-
-  useEffect(() => {
-    if (volume > 10) {
-      setHidden(false);
-    } else {
-      setHidden(true);
+    if (volume > 0) {
+      console.log("Volume:", volume);
+      stopVolumeMeter();
     }
   }, [volume]);
 
   useEffect(() => {
-    if (paragraph !== "") {
-      setTimeout(
-        () => {
-          let utterance = new SpeechSynthesisUtterance(paragraph);
-          speechSynthesis.speak(utterance);
-        },
-        volume > 31 ? 2000 : volume > 10 && volume < 30 ? 3000 : 5000
-      );
+    if (transcript !== "") {
+      console.log("Transcrição:", transcript);
+      setParagraph(transcript);
+      paragraphRef.current = transcript;
+      SpeechRecognition.stopListening();
     }
-  }, [paragraph]);
+  }, [transcript]);
+
+  useEffect(() => {
+    if (volume > 0 && transcript !== "") {
+      setIsListening(false);
+      setHidden(false);
+    }
+  }, [volume, transcript]);
+
+  useEffect(() => {
+    const p = document.querySelector(".transcript");
+    p?.addEventListener("animationend", finishPlay);
+  }, []);
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
-      <>
-        <p>Browser does not support Speech recognition</p>
-      </>
+      <div
+        style={{
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          width: "100vw",
+          height: "100vh",
+          fontSize: "30px",
+        }}
+      >
+        <img alt={"sad"} src={noSupport}></img>
+        <p
+          style={{
+            color: "white",
+            fontSize: "30px",
+          }}
+        >
+          Este navegador não suporta reconhecimento de voz
+        </p>
+      </div>
+    );
+  } else {
+    return (
+      <div className="App">
+        <main className="primary-content">
+          <img
+            className="microphone"
+            src={microphoneImage}
+            alt="microphone"
+            onClick={handleClick}
+          ></img>
+          <div className="tubeArea">
+            <div className="tubeFlipped"></div>
+          </div>
+          <div className="tubeArea">
+            <div className="tube"></div>
+          </div>
+          <p
+            data-transcript={paragraph}
+            className={`${hidden ? "hidden" : null} transcript ${
+              volume > 31
+                ? "fast"
+                : volume > 20 && volume < 30
+                ? "medium"
+                : "slow"
+            }`}
+          ></p>
+        </main>
+      </div>
     );
   }
-  return (
-    <div className="App">
-      <main className="primary-content">
-        <div className="tubeArea">
-          <div className="tubeFlipped"></div>
-        </div>
-        <div className="tubeArea">
-          <div className="tube"></div>
-        </div>
-        <p
-          className={`${hidden ? "hidden" : null} transcript ${
-            volume > 31 ? "fast" : volume > 10 && volume < 30 ? "medium" : null
-          }`}
-        >
-          {paragraph}
-        </p>
-        <img
-          className="microphone"
-          src={microphoneImage}
-          alt="microphone"
-          onClick={start}
-        ></img>
-        <h1 className="page-title">Diga algo!</h1>
-        {isListening && (
-          <button className="btn" onClick={stop}>
-            Stop
-          </button>
-        )}
-      </main>
-    </div>
-  );
 }
 
 export default App;

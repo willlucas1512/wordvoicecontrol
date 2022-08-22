@@ -1,6 +1,3 @@
+Say something in the microphone, either calmly, medium or loudly. What you said will fly out of a pipe, and if it enters the other pipe, it will repeat what you said!
 
-Development of a voice-controlled interactive game model,
-inspired by the old Simon Says game, where the player is challenged to
-memorize and repeat color sequences.
-
-Real-time voice recognition and transcription to text was done using google API [speech-to-text](https://cloud.google.com/speech-to-text)
+Real-time voice recognition, transcription to text and voice synthesis were done using WebSpeech API [speech-to-text](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API)

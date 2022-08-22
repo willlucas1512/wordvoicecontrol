@@ -29,8 +29,9 @@ html,
 }
 .microphone {
   cursor: pointer;
-  max-width: 120px;
-  max-height: 120px;
+  margin-top: 8px;
+  width: 80px;
+  height: 80px;
 }
 
 .btn {
@@ -62,7 +63,7 @@ p {
 
 .tubeArea {
   height: 400px;
-  width: 400px;
+  width: 100%;
 }
 .tube {
   z-index: 4;
@@ -175,117 +176,82 @@ p {
   }
 }
 
-.transcript {
-  position: absolute;
-  z-index: 1;
-  left: 250px;
-  font-family: "Varela Round", sans-serif;
-  color: #ffffff;
-  font-weight: 300;
-  font-size: 28px;
-  animation: falling ease-out 1 5s;
-}
-
 .hidden {
   display: none;
 }
 
-.fast {
-  display: inline;
-  animation-duration: 2s;
-}
-.medium {
-  display: inline;
-  animation-duration: 3s;
+.transcript {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  color: #fff;
 }
 .slow {
-  display: inline;
-  animation-duration: 5s;
+  animation: x-motion 5s ease-in-out 0s;
 }
 
-@keyframes falling {
+.slow:before {
+  content: attr(data-transcript);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 100%;
+  font-size: 28px;
+  font-family: "Varela Round", sans-serif;
+  animation: y-motion 5s ease-in-out 0s;
+}
+
+.medium {
+  animation: x-motion 3s ease-in-out 0s;
+}
+
+.medium:before {
+  content: attr(data-transcript);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 100%;
+  font-size: 28px;
+  font-family: "Varela Round", sans-serif;
+  animation: y-motion 3s ease-in-out 0s;
+}
+
+.fast {
+  animation: x-motion 1.5s ease-in-out 0s;
+}
+
+.fast:before {
+  content: attr(data-transcript);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 100%;
+  font-size: 28px;
+  font-family: "Varela Round", sans-serif;
+  animation: y-motion 1.5s ease-in-out 0s;
+}
+
+@keyframes x-motion {
   0% {
-    left: 25%;
-    bottom: 550px;
+    left: 200px;
   }
-  5% {
-    left: 28%;
-    bottom: 540px;
+
+  100% {
+    left: 83vw;
   }
-  10% {
-    left: 30%;
-    bottom: 535px;
-  }
-  15% {
-    left: 33%;
-    bottom: 530px;
-  }
-  20% {
-    left: 35%;
-    bottom: 520px;
-  }
-  25% {
-    left: 38%;
-    bottom: 510px;
-  }
-  30% {
-    left: 40%;
-    bottom: 500px;
-  }
-  35% {
-    left: 43%;
-    bottom: 495px;
-  }
-  40% {
-    left: 45%;
-    bottom: 490px;
-  }
-  45% {
-    left: 48%;
-    bottom: 480px;
+}
+
+@keyframes y-motion {
+  0% {
+    top: 15vh;
   }
   50% {
-    left: 50%;
-    bottom: 470px;
-  }
-  55% {
-    left: 53%;
-    bottom: 460px;
-  }
-  60% {
-    left: 55%;
-    bottom: 450px;
-  }
-  65% {
-    left: 58%;
-    bottom: 440px;
-  }
-  70% {
-    left: 60%;
-    bottom: 400px;
-  }
-  75% {
-    left: 63%;
-    bottom: 375px;
-  }
-  80% {
-    left: 65%;
-    bottom: 350px;
-  }
-  85% {
-    left: 70%;
-    bottom: 325px;
-  }
-  90% {
-    left: 75%;
-    bottom: 300px;
-  }
-  95% {
-    left: 80%;
-    bottom: 275px;
+    top: 10vh;
   }
   100% {
-    left: 85%;
-    bottom: 250px;
+    top: calc(100vh - 250px);
   }
 }
