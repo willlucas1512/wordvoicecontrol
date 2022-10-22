@@ -13,6 +13,8 @@ function App() {
   const [volume, setVolume] = useState(0);
   const [hidden, setHidden] = useState(true);
   const paragraphRef = useRef("");
+  const [fallenWords, setFallenWords] = useState([]);
+  const fallenWordsRef = useRef([]);
   let lang;
   const queryString = window.location.search;
   queryString ? (lang = queryString.split("?")[1]) : (lang = "pt-br");
@@ -124,11 +126,33 @@ function App() {
     let utterance = new SpeechSynthesisUtterance(paragraphRef.current);
     utterance.lang = "pt-BR";
     speechSynthesis.speak(utterance);
-    setParagraph("");
-    paragraphRef.current = "";
+    setFallenWords(fallenWordsRef.current);
     setVolume(0);
     setHidden(true);
   };
+
+  useEffect(() => {
+    if (fallenWords.length > 0) {
+      setParagraph("");
+      paragraphRef.current = "";
+
+      // if (fallenWords.length === fallenWordsRef.current.length) {
+      // const minIndice = Math.min(...fallenWords.map((o) => o.indice));
+      //console.log(minIndice, "MIN_INDICE");
+      //setTimeout(() => {
+      //const xFallenWords = [...fallenWords];
+      //const minIndex = xFallenWords.findIndex((value) => {
+      //console.log(value);
+      //return value.indice === minIndice;
+      //});
+      //console.log(minIndex, "MIN_INDEX");
+      //xFallenWords.splice(minIndex, 2);
+      //console.log(xFallenWords, "after Splice");
+      //setFallenWords(xFallenWords);
+      //}, 60000);
+      //}
+    }
+  }, [fallenWords]);
 
   useEffect(() => {
     if (volume > 0) {
@@ -142,6 +166,33 @@ function App() {
       console.log("Transcrição:", transcript);
       setParagraph(transcript);
       paragraphRef.current = transcript;
+      if (volume > 30 || volume < 20) {
+        const xParagraph = transcript;
+        const current = [...fallenWords];
+        const x1stHalf = xParagraph.substring(
+          0,
+          Math.round(xParagraph.length / 2)
+        );
+        const x2ndHalf = xParagraph.substring(
+          Math.round(xParagraph.length / 2),
+          xParagraph.length
+        );
+        const xCurrentLengthBeforePush1 = current.length;
+        current.push({
+          text: x1stHalf,
+          position: `${Math.random() * 50}%`,
+          rotation: `${Math.random() * 30}deg`,
+          indice: xCurrentLengthBeforePush1,
+        });
+        const xCurrentLengthBeforePush2 = current.length;
+        current.push({
+          text: x2ndHalf,
+          position: `${Math.random() * 50 + (x2ndHalf.length * 9) / 4}%`,
+          rotation: `-${Math.random() * 30}deg`,
+          indice: xCurrentLengthBeforePush2,
+        });
+        fallenWordsRef.current = current;
+      }
       SpeechRecognition.stopListening();
     }
   }, [transcript]);
@@ -203,12 +254,42 @@ function App() {
             data-transcript={paragraph}
             className={`${hidden ? "hidden" : null} transcript ${
               volume > 31
-                ? "fast"
+                ? "miss"
                 : volume > 20 && volume < 30
                 ? "medium"
-                : "slow"
+                : "miss"
             }`}
           ></p>
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              width: "100vw",
+              height: "100px",
+            }}
+          >
+            {fallenWords.map((item, idx) => {
+              return (
+                <p
+                  style={{
+                    color: "#fff",
+                    WebkitTextStroke: "1px magenta",
+                    textShadow: "2px 2px 4px magenta",
+                    fontSize: "24px",
+                    color: "white",
+                    transform: `rotate(${item.rotation})`,
+                    position: "absolute",
+                    left: item.position,
+                    bottom: 0,
+                    margin: 0,
+                  }}
+                  key={idx}
+                >
+                  {item.text}
+                </p>
+              );
+            })}
+          </div>
         </main>
       </div>
     );

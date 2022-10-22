@@ -1,10 +1,17 @@
 html,
 .App {
-  background-color: black;
   width: 100%;
   height: 100%;
 }
 
+.App {
+  background-image: url("./assets/images/bg.png");
+  //background-color: #000;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
 .page-title {
   font-weight: 400;
   font-size: 40px;
@@ -185,53 +192,84 @@ p {
   width: 30px;
   height: 30px;
   color: #fff;
+  -webkit-text-stroke: 1px magenta;
+  text-shadow: 2px 2px 4px magenta;
 }
-.slow {
-  animation: x-motion 5s ease-in-out 0s;
+.miss {
+  animation: x-motion-miss 3s linear 0s;
 }
 
-.slow:before {
+.miss:before {
   content: attr(data-transcript);
   color: #fff;
+  -webkit-text-stroke: 1px magenta;
+  text-shadow: 2px 2px 4px magenta;
   width: 30px;
   height: 30px;
   position: absolute;
   top: 100%;
   font-size: 28px;
   font-family: "Varela Round", sans-serif;
-  animation: y-motion 5s ease-in-out 0s;
+  animation: y-motion-miss 3s linear 0s;
 }
 
 .medium {
-  animation: x-motion 3s ease-in-out 0s;
+  animation: x-motion 2s ease-in-out 0s;
 }
 
 .medium:before {
   content: attr(data-transcript);
   color: #fff;
+  -webkit-text-stroke: 1px magenta;
+  text-shadow: 2px 2px 4px magenta;
   width: 30px;
   height: 30px;
   position: absolute;
   top: 100%;
   font-size: 28px;
   font-family: "Varela Round", sans-serif;
-  animation: y-motion 3s ease-in-out 0s;
+  animation: y-motion 2s ease-in-out 0s;
 }
 
-.fast {
-  animation: x-motion 1.5s ease-in-out 0s;
+//.fast {
+// animation: x-motion 1.5s ease-in-out 0s forwards;
+//}
+
+//.fast:before {
+//  content: attr(data-transcript);
+// color: #fff;
+//width: 30px;
+// height: 30px;
+// position: absolute;
+//top: 100%;
+//font-size: 28px;
+//font-family: "Varela Round", sans-serif;
+//animation: y-motion 1.5s ease-in-out 0s forwards;
+//}
+
+@keyframes x-motion-miss {
+  0% {
+    left: 200px;
+  }
+  50% {
+    left: 69vw;
+  }
+  100% {
+    left: 50vw;
+  }
 }
 
-.fast:before {
-  content: attr(data-transcript);
-  color: #fff;
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  top: 100%;
-  font-size: 28px;
-  font-family: "Varela Round", sans-serif;
-  animation: y-motion 1.5s ease-in-out 0s;
+@keyframes y-motion-miss {
+  0% {
+    top: 15vh;
+  }
+  50% {
+    top: calc(100vh - 340px);
+  }
+
+  100% {
+    top: calc(100vh - 50px);
+  }
 }
 
 @keyframes x-motion {
