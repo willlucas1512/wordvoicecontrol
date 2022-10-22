@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./App.scss";
 import microphoneImage from "./assets/images/microphone.svg";
 import noSupport from "./assets/images/sad.png";
+import logo from "./assets/images/logoladif.png";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -238,12 +239,30 @@ function App() {
     return (
       <div className="App">
         <main className="primary-content">
-          <img
-            className="microphone"
-            src={microphoneImage}
-            alt="microphone"
-            onClick={handleClick}
-          ></img>
+          <div
+            style={{
+              width: "100%",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+            }}
+          >
+            <div style={{ alignSelf: "center", justifySelf: "center" }}>
+              <img
+                width={"200px"}
+                height={"50px"}
+                alt="logo ladif"
+                src={logo}
+              ></img>
+            </div>
+            <div style={{ alignSelf: "center", justifySelf: "center" }}>
+              <img
+                className="microphone"
+                src={microphoneImage}
+                alt="microphone"
+                onClick={handleClick}
+              ></img>
+            </div>
+          </div>
           <div className="tubeArea">
             <div className="tubeFlipped"></div>
           </div>
