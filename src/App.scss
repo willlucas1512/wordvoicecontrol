@@ -199,6 +199,10 @@ p {
   animation: x-motion-miss 3s linear 0s;
 }
 
+.missHigh {
+  animation: x-motion-misshigh 3s linear 0s;
+}
+
 .miss:before {
   content: attr(data-transcript);
   color: #fff;
@@ -211,6 +215,20 @@ p {
   font-size: 28px;
   font-family: "Varela Round", sans-serif;
   animation: y-motion-miss 3s linear 0s;
+}
+
+.missHigh:before {
+  content: attr(data-transcript);
+  color: #fff;
+  -webkit-text-stroke: 1px magenta;
+  text-shadow: 2px 2px 4px magenta;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 100%;
+  font-size: 28px;
+  font-family: "Varela Round", sans-serif;
+  animation: y-motion-misshigh 3s linear 0s;
 }
 
 .medium {
@@ -247,12 +265,37 @@ p {
 //animation: y-motion 1.5s ease-in-out 0s forwards;
 //}
 
+@keyframes x-motion-misshigh {
+  0% {
+    left: 200px;
+  }
+  50% {
+    left: calc(100vw - 60px);
+  }
+  100% {
+    left: 95vw;
+  }
+}
+
+@keyframes y-motion-misshigh {
+  0% {
+    top: 15vh;
+  }
+  50% {
+    top: calc(100vh - 450px);
+  }
+
+  100% {
+    top: calc(100vh - 50px);
+  }
+}
+
 @keyframes x-motion-miss {
   0% {
     left: 200px;
   }
   50% {
-    left: 69vw;
+    left: 73vw;
   }
   100% {
     left: 50vw;
@@ -264,7 +307,7 @@ p {
     top: 15vh;
   }
   50% {
-    top: calc(100vh - 340px);
+    top: calc(100vh - 350px);
   }
 
   100% {

@@ -167,7 +167,7 @@ function App() {
       console.log("Transcrição:", transcript);
       setParagraph(transcript);
       paragraphRef.current = transcript;
-      if (volume > 30 || volume < 20) {
+      if (volume > 25 || volume < 15) {
         const xParagraph = transcript;
         const current = [...fallenWords];
         const x1stHalf = xParagraph.substring(
@@ -181,14 +181,18 @@ function App() {
         const xCurrentLengthBeforePush1 = current.length;
         current.push({
           text: x1stHalf,
-          position: `${Math.random() * 50}%`,
+          position: `${volume > 25 ? 96 : Math.random() * 50}%`,
           rotation: `${Math.random() * 30}deg`,
           indice: xCurrentLengthBeforePush1,
         });
         const xCurrentLengthBeforePush2 = current.length;
         current.push({
           text: x2ndHalf,
-          position: `${Math.random() * 50 + (x2ndHalf.length * 9) / 4}%`,
+          position: `${
+            volume > 25
+              ? 96 + (x2ndHalf.length * 9) / 4
+              : Math.random() * 50 + (x2ndHalf.length * 9) / 4
+          }%`,
           rotation: `-${Math.random() * 30}deg`,
           indice: xCurrentLengthBeforePush2,
         });
@@ -231,7 +235,8 @@ function App() {
             fontSize: "30px",
           }}
         >
-          Este navegador não suporta reconhecimento de voz
+          Este navegador não suporta reconhecimento de voz. Tente utilizar um
+          navegador diferente ou mais recente!
         </p>
       </div>
     );
@@ -272,9 +277,9 @@ function App() {
           <p
             data-transcript={paragraph}
             className={`${hidden ? "hidden" : null} transcript ${
-              volume > 31
-                ? "miss"
-                : volume > 20 && volume < 30
+              volume > 25
+                ? "missHigh"
+                : volume > 15 && volume < 25
                 ? "medium"
                 : "miss"
             }`}
