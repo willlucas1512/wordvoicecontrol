@@ -142,7 +142,6 @@ function App() {
     if (fallenWords.length > 0) {
       setParagraph("");
       paragraphRef.current = "";
-
       // if (fallenWords.length === fallenWordsRef.current.length) {
       // const minIndice = Math.min(...fallenWords.map((o) => o.indice));
       //console.log(minIndice, "MIN_INDICE");
@@ -162,7 +161,7 @@ function App() {
   }, [fallenWords]);
 
   useEffect(() => {
-    if (volume > 0) {
+    if (volume > 2) {
       console.log("Volume:", volume);
       stopVolumeMeter();
     }
@@ -265,13 +264,30 @@ function App() {
                 src={logo}
               ></img>
             </div>
-            <div style={{ alignSelf: "center", justifySelf: "center" }}>
+            <div
+              style={{
+                alignSelf: "center",
+                justifySelf: "center",
+              }}
+            >
               <img
-                className="microphone"
+                className={isListening ? "microphoneListening" : "microphone"}
                 src={microphoneImage}
                 alt="microphone"
                 onClick={handleClick}
               ></img>
+            </div>
+            <div
+              style={{
+                alignSelf: "center",
+                justifySelf: "center",
+              }}
+            >
+              {" "}
+              {isListening && <p className={"listening"}>Escutando</p>}
+              {volume > 2 && (
+                <p className={"volume"}>Volume: {Math.round(volume)}</p>
+              )}
             </div>
           </div>
           <div className="tubeArea">
@@ -320,6 +336,17 @@ function App() {
               );
             })}
           </div>
+          <p style={{ color: "#fff", fontSize: "4px" }}>
+            Desenvolvido por{" "}
+            <a
+              style={{ color: "#fff" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/willlucas1512"
+            >
+              William Lucas
+            </a>
+          </p>
         </main>
       </div>
     );
