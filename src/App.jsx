@@ -167,7 +167,7 @@ function App() {
       console.log("Transcrição:", transcript);
       setParagraph(transcript);
       paragraphRef.current = transcript;
-      if (volume > 25 || volume < 15) {
+      if (volume > 20 || volume < 10) {
         const xParagraph = transcript;
         const current = [...fallenWords];
         const x1stHalf = xParagraph.substring(
@@ -181,7 +181,7 @@ function App() {
         const xCurrentLengthBeforePush1 = current.length;
         current.push({
           text: x1stHalf,
-          position: `${volume > 25 ? 96 : Math.random() * 50}%`,
+          position: `${volume > 20 ? 96 : Math.random() * 50}%`,
           rotation: `${Math.random() * 30}deg`,
           indice: xCurrentLengthBeforePush1,
         });
@@ -189,7 +189,7 @@ function App() {
         current.push({
           text: x2ndHalf,
           position: `${
-            volume > 25
+            volume > 20
               ? 96 + (x2ndHalf.length * 9) / 4
               : Math.random() * 50 + (x2ndHalf.length * 9) / 4
           }%`,
@@ -277,9 +277,9 @@ function App() {
           <p
             data-transcript={paragraph}
             className={`${hidden ? "hidden" : null} transcript ${
-              volume > 25
+              volume > 20
                 ? "missHigh"
-                : volume > 15 && volume < 25
+                : volume > 10 && volume < 20
                 ? "medium"
                 : "miss"
             }`}
