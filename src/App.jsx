@@ -274,7 +274,7 @@ function App() {
     return (
       <div
         style={{
-          color: "white",
+          backgroundColor: "white",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -287,7 +287,7 @@ function App() {
         <img alt={"sad"} src={noSupport}></img>
         <p
           style={{
-            color: "white",
+            color: "black",
             fontSize: "30px",
           }}
         >
