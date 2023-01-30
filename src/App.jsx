@@ -25,13 +25,13 @@ function App() {
   queryString ? (lang = queryString.split("?")[1]) : (lang = "pt-br");
 
   const [volumeMin, setVolumeMin] = useState(
-    Number(localStorage.getItem("volumeMin"))
+    Number(localStorage.getItem("volumeMin") || 2)
   );
   const [volumeMinHit, setVolumeMinHit] = useState(
-    Number(localStorage.getItem("volumeMinHit"))
+    Number(localStorage.getItem("volumeMinHit") || 10)
   );
   const [volumeMax, setVolumeMax] = useState(
-    Number(localStorage.getItem("volumeMax"))
+    Number(localStorage.getItem("volumeMax") || 20)
   );
   const handleChangeMin = (event) => setVolumeMin(event.target.value);
   const handleChangeMinHit = (event) => setVolumeMinHit(event.target.value);
