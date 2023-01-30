@@ -34,7 +34,7 @@ function App() {
       }
       that.instant = Math.sqrt(sum / input.length) * 100;
       console.log(that.instant);
-      that.instant > 10 && setVolume(that.instant);
+      that.instant > 5 && setVolume(that.instant);
     };
   }
 
