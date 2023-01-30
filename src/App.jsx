@@ -16,6 +16,7 @@ function App() {
   const paragraphRef = useRef("");
   const [fallenWords, setFallenWords] = useState([]);
   const fallenWordsRef = useRef([]);
+  const volumeRef = useRef(0);
   let lang;
   const queryString = window.location.search;
   queryString ? (lang = queryString.split("?")[1]) : (lang = "pt-br");
@@ -35,6 +36,9 @@ function App() {
       that.instant = Math.sqrt(sum / input.length) * 100;
       console.log(that.instant);
       that.instant > 2 && setVolume(that.instant);
+      if (that.instant > 2) {
+        volumeRef.current = that.instant;
+      }
     };
   }
 
@@ -126,7 +130,9 @@ function App() {
   const finishPlay = () => {
     let utterance = new SpeechSynthesisUtterance(paragraphRef.current);
     utterance.lang = "pt-BR";
-    speechSynthesis.speak(utterance);
+    volumeRef.current > 10 &&
+      volumeRef.current < 20 &&
+      speechSynthesis.speak(utterance);
     setFallenWords(fallenWordsRef.current);
     setVolume(0);
     setHidden(true);
