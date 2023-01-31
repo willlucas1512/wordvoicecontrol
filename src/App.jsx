@@ -315,17 +315,6 @@ function App() {
                 alt="logo ladif"
                 src={logo}
           ></img> */}
-              <p style={{ color: "#000", fontSize: "4px", marginTop: 0 }}>
-                Desenvolvido por{" "}
-                <a
-                  style={{ color: "#000" }}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://github.com/willlucas1512"
-                >
-                  William Lucas
-                </a>
-              </p>
             </div>
             <div
               style={{
@@ -444,7 +433,17 @@ function App() {
                 justifySelf: "center",
               }}
             >
-              {" "}
+              <p style={{ color: "#000", fontSize: "4px", marginTop: 0 }}>
+                Desenvolvido por{" "}
+                <a
+                  style={{ color: "#000" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/willlucas1512"
+                >
+                  William Lucas
+                </a>
+              </p>{" "}
               {isListening && <p className={"listening"}>Escutando</p>}
               {(volume > Number(localStorage.getItem("volumeMin")) ||
                 volume > 2) &&
