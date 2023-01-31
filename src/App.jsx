@@ -308,17 +308,17 @@ function App() {
               marginTop: "8px",
             }}
           >
-            <div style={{ alignSelf: "start", justifySelf: "center" }}>
+            <div style={{ alignSelf: "center", justifySelf: "end" }}>
               {/*  <img
                 width={"200px"}
                 height={"50px"}
                 alt="logo ladif"
                 src={logo}
           ></img> */}
-              <p style={{ color: "#fff", fontSize: "4px", marginTop: 0 }}>
+              <p style={{ color: "#000", fontSize: "4px", marginTop: 0 }}>
                 Desenvolvido por{" "}
                 <a
-                  style={{ color: "#fff" }}
+                  style={{ color: "#000" }}
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://github.com/willlucas1512"
