@@ -309,12 +309,12 @@ function App() {
             }}
           >
             <div style={{ alignSelf: "start", justifySelf: "center" }}>
-              <img
+              {/*  <img
                 width={"200px"}
                 height={"50px"}
                 alt="logo ladif"
                 src={logo}
-              ></img>
+          ></img> */}
               <p style={{ color: "#fff", fontSize: "4px", marginTop: 0 }}>
                 Desenvolvido por{" "}
                 <a
