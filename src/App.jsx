@@ -483,11 +483,10 @@ function App() {
               return (
                 <p
                   style={{
-                    color: "#fff",
-                    WebkitTextStroke: "1px magenta",
-                    textShadow: "2px 2px 4px magenta",
+                    color: "#000",
+                    WebkitTextStroke: "1px #000",
+                    //textShadow: "2px 2px 4px darkblue",
                     fontSize: "24px",
-                    color: "white",
                     transform: `rotate(${item.rotation})`,
                     position: "absolute",
                     left: item.position,

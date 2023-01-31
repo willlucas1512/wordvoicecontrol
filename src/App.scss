@@ -236,9 +236,9 @@ p {
   position: absolute;
   width: 30px;
   height: 30px;
-  color: #fff;
-  -webkit-text-stroke: 1px magenta;
-  text-shadow: 2px 2px 4px magenta;
+  color: #000;
+  -webkit-text-stroke: 1px #000;
+  // text-shadow: 2px 2px 4px #000;
 }
 .miss {
   animation: x-motion-miss 5s linear 0s;
@@ -250,9 +250,9 @@ p {
 
 .miss:before {
   content: attr(data-transcript);
-  color: #fff;
-  -webkit-text-stroke: 1px magenta;
-  text-shadow: 2px 2px 4px magenta;
+  color: #000;
+  -webkit-text-stroke: 1px #000;
+  //text-shadow: 2px 2px 4px darkblue;
   width: 30px;
   height: 30px;
   position: absolute;
@@ -264,9 +264,9 @@ p {
 
 .missHigh:before {
   content: attr(data-transcript);
-  color: #fff;
-  -webkit-text-stroke: 1px magenta;
-  text-shadow: 2px 2px 4px magenta;
+  color: #000;
+  -webkit-text-stroke: 1px #000;
+  //text-shadow: 2px 2px 4px darkblue;
   width: 30px;
   height: 30px;
   position: absolute;
@@ -282,9 +282,9 @@ p {
 
 .medium:before {
   content: attr(data-transcript);
-  color: #fff;
-  -webkit-text-stroke: 1px magenta;
-  text-shadow: 2px 2px 4px magenta;
+  color: #000;
+  -webkit-text-stroke: 1px #000;
+  // text-shadow: 2px 2px 4px darkblue;
   width: 30px;
   height: 30px;
   position: absolute;
