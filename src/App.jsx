@@ -437,7 +437,7 @@ function App() {
                 style={{
                   color: "#fff",
                   fontSize: "8px",
-                  marginLeft: "8px",
+                  marginTop: "15px",
                   textShadow:
                     "0em 0.01em #000, 0em 0.02em #000, 0em 0.02em 0.03em #000, -0.01em 0.01em #000, -0.02em 0.02em #000, -0.03em 0.03em #000, -0.04em 0.04em #000, -0.01em -0.01em 0.03em #000, -0.02em -0.02em 0.03em #000, -0.03em -0.03em 0.03em #000",
                 }}
