@@ -433,17 +433,30 @@ function App() {
                 justifySelf: "center",
               }}
             >
-              <p style={{ color: "#000", fontSize: "4px", marginTop: 0 }}>
+              <p
+                style={{
+                  color: "#fff",
+                  fontSize: "8px",
+                  marginLeft: "8px",
+                  textShadow:
+                    "0em 0.01em #000, 0em 0.02em #000, 0em 0.02em 0.03em #000, -0.01em 0.01em #000, -0.02em 0.02em #000, -0.03em 0.03em #000, -0.04em 0.04em #000, -0.01em -0.01em 0.03em #000, -0.02em -0.02em 0.03em #000, -0.03em -0.03em 0.03em #000",
+                }}
+              >
                 Desenvolvido por{" "}
                 <a
-                  style={{ color: "#000" }}
+                  style={{
+                    color: "#fff",
+                    textUnderlineOffset: "1px",
+                    textShadow:
+                      "0em 0.01em #000, 0em 0.02em #000, 0em 0.02em 0.03em #000, -0.01em 0.01em #000, -0.02em 0.02em #000, -0.03em 0.03em #000, -0.04em 0.04em #000, -0.01em -0.01em 0.03em #000, -0.02em -0.02em 0.03em #000, -0.03em -0.03em 0.03em #000",
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://github.com/willlucas1512"
                 >
                   William Lucas
                 </a>
-              </p>{" "}
+              </p>
               {isListening && <p className={"listening"}>Escutando</p>}
               {(volume > Number(localStorage.getItem("volumeMin")) ||
                 volume > 2) &&
