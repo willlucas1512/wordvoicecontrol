@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import "./App.scss";
 import microphoneImage from "./assets/images/microphone.svg";
 import noSupport from "./assets/images/sad.png";
-import logo from "./assets/images/logoladif.png";
+import audio from "./assets/sounds/launch.mp3";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -158,6 +158,10 @@ function App() {
     setHidden(true);
   };
 
+  const playAudio = () => {
+    new Audio(audio).play();
+  };
+
   useEffect(() => {
     if (fallenWords.length > 0) {
       setParagraph("");
@@ -264,6 +268,7 @@ function App() {
   useEffect(() => {
     const p = document.querySelector(".transcript");
     p?.addEventListener("animationstart", stopListening);
+    p?.addEventListener("animationstart", playAudio);
     p?.addEventListener("animationend", finishPlay);
     if (pathname === "/admin-ladif") {
       setAdmin(true);
