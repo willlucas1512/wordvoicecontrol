@@ -480,7 +480,7 @@ function App() {
                     volume > 10) &&
                   (volume < Number(localStorage.getItem("volumeMax")) ||
                     volume < 20)
-                ? "medium"
+                ? "hit"
                 : "miss"
             }`}
           ></p>
@@ -499,7 +499,7 @@ function App() {
                     color: "#000",
                     WebkitTextStroke: "1px #000",
                     //textShadow: "2px 2px 4px darkblue",
-                    fontSize: "24px",
+                    fontSize: "30px",
                     transform: `rotate(${item.rotation})`,
                     position: "absolute",
                     left: item.position,
