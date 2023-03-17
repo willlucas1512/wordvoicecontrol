@@ -236,8 +236,6 @@ p {
   position: absolute;
   width: 30px;
   height: 30px;
-  left: 150px;
-  top: 210px;
   color: #000;
   -webkit-text-stroke: 1px #000;
   // text-shadow: 2px 2px 4px #000;
@@ -259,7 +257,7 @@ p {
   height: 30px;
   position: absolute;
   top: 100%;
-  font-size: 30px;
+  font-size: 28px;
   font-family: "Varela Round", sans-serif;
   animation: y-motion-miss 5s linear 0s;
 }
@@ -273,18 +271,16 @@ p {
   height: 30px;
   position: absolute;
   top: 100%;
-  font-size: 30px;
+  font-size: 28px;
   font-family: "Varela Round", sans-serif;
   animation: y-motion-misshigh 1s linear 0s;
 }
 
-.hit {
-  animation: x 2s linear alternate, y 2s cubic-bezier(0, 533.33, 1, 533.33);
-  // animation: x 2s linear infinite alternate;
-  //animation: x-motion 2s ease-in-out 0s;
+.medium {
+  animation: x-motion 2s ease-in-out 0s;
 }
 
-.hit:before {
+.medium:before {
   content: attr(data-transcript);
   color: #000;
   -webkit-text-stroke: 1px #000;
@@ -293,22 +289,26 @@ p {
   height: 30px;
   position: absolute;
   top: 100%;
-  font-size: 30px;
+  font-size: 28px;
   font-family: "Varela Round", sans-serif;
-  //animation: y-motion 2s ease-in-out 0s;
-  //animation: y 2s infinite cubic-bezier(0, 533.33, 1, 533.33);
+  animation: y-motion 2s ease-in-out 0s;
 }
 
-@keyframes x {
-  to {
-    left: 83vw;
-  }
-}
-@keyframes y {
-  to {
-    top: 209.5px;
-  }
-}
+//.fast {
+// animation: x-motion 1.5s ease-in-out 0s forwards;
+//}
+
+//.fast:before {
+//  content: attr(data-transcript);
+// color: #fff;
+//width: 30px;
+// height: 30px;
+// position: absolute;
+//top: 100%;
+//font-size: 28px;
+//font-family: "Varela Round", sans-serif;
+//animation: y-motion 1.5s ease-in-out 0s forwards;
+//}
 
 @keyframes x-motion-misshigh {
   0% {
