@@ -4,6 +4,11 @@ html,
   height: 100%;
 }
 
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
 .App {
   background-image: url("./assets/images/bg.png");
   //background-color: #000;
@@ -35,19 +40,9 @@ html,
   height: 100%;
 }
 .microphone {
-  cursor: pointer;
   margin-top: 8px;
   width: 80px;
   height: 80px;
-}
-
-.microphoneListening {
-  cursor: pointer;
-  margin-top: 8px;
-  width: 80px;
-  height: 80px;
-  filter: invert(14%) sepia(100%) saturate(3552%) hue-rotate(303deg)
-    brightness(97%) contrast(115%) drop-shadow(0px 3px 3px #fff);
 }
 
 .listening {
@@ -120,10 +115,10 @@ p {
 .tube {
   z-index: 4;
   width: 200px;
-  height: 400px;
+  height: 350px;
   position: absolute;
   bottom: 0;
-  left: 85%;
+  left: 90%;
   transform: translateX(-50%);
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
   background: linear-gradient(
@@ -177,9 +172,9 @@ p {
   width: 200px;
   height: 400px;
   position: absolute;
-  top: 0;
+  top: 300px;
   left: 0;
-  transform: rotate(80deg);
+  transform: rotate(65deg);
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
   background: linear-gradient(
     to right,
@@ -241,7 +236,9 @@ p {
   // text-shadow: 2px 2px 4px #000;
 }
 .miss {
-  animation: x-motion-miss 3s linear 0s;
+  animation: x-motion-miss 3s linear alternate infinite,
+    y-motion-miss 3s cubic-bezier(0, 1200, 1, 1200) infinite;
+  //animation: x-motion-miss 3s linear 0s;
 }
 
 .missHigh {
@@ -259,7 +256,7 @@ p {
   top: 100%;
   font-size: 30px;
   font-family: "Varela Round", sans-serif;
-  animation: y-motion-miss 3s linear 0s;
+  //animation: y-motion-miss 3s linear 0s;
 }
 
 .missHigh:before {
@@ -277,7 +274,7 @@ p {
 }
 
 .hit {
-  animation: x 2s linear alternate, y 2s cubic-bezier(0, 533.33, 1, 533.33);
+  animation: x 2s linear alternate, y 2s cubic-bezier(0, 1200, 1, 1200);
   // animation: x 2s linear infinite alternate;
   //animation: x-motion 2s ease-in-out 0s;
 }
@@ -299,12 +296,12 @@ p {
 
 @keyframes x {
   to {
-    left: 83vw;
+    left: 90vw;
   }
 }
 @keyframes y {
   to {
-    top: 179.5px;
+    top: 449.5px;
   }
 }
 
@@ -334,26 +331,36 @@ p {
 }
 
 @keyframes x-motion-miss {
-  0% {
-    left: 200px;
-  }
-  50% {
-    left: calc(85% - 200px);
-  }
-  100% {
-    left: 50vw;
+  // 0% {
+  //  left: 200px;
+  // }
+  //50% {
+  // left: calc(85% - 200px);
+  //}
+  // 100% {
+  //  left: 50vw;
+  //}
+  to {
+    left: 90vw;
   }
 }
 
 @keyframes y-motion-miss {
-  0% {
-    top: 15vh;
-  }
-  50% {
-    top: calc(100vh - 330px);
+  //  0% {
+  //   top: 15vh;
+  // }
+  // 50% {
+  // top: calc(100vh - 330px);
+  //}
+
+  // 100% {
+  //  top: calc(100vh - 50px);
+  //}
+  to {
+    top: 449.5px;
   }
 
-  100% {
+  to {
     top: calc(100vh - 50px);
   }
 }
@@ -370,7 +377,7 @@ p {
 
 @keyframes y-motion {
   0% {
-    top: 15vh;
+    top: 70vh;
   }
   50% {
     top: 10vh;

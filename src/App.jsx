@@ -16,6 +16,7 @@ function App() {
   const [paragraph, setParagraph] = useState("");
   const [volume, setVolume] = useState(0);
   const [hidden, setHidden] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const paragraphRef = useRef("");
   const [fallenWords, setFallenWords] = useState([]);
   const fallenWordsRef = useRef([]);
@@ -204,6 +205,8 @@ function App() {
       console.log("Transcrição:", transcript);
       setParagraph(transcript);
       paragraphRef.current = transcript;
+      SpeechRecognition.stopListening();
+      stopListening();
       const xVolumeMinHit = Number(localStorage.getItem("volumeMinHit"));
       const xMinimoHit = xVolumeMinHit ? xVolumeMinHit : 10;
       const xVolumeMax = Number(localStorage.getItem("volumeMax"));
@@ -239,7 +242,8 @@ function App() {
         });
         fallenWordsRef.current = current;
       }
-      SpeechRecognition.stopListening();
+    } else {
+      stopListening();
     }
   }, [transcript]);
 
@@ -277,11 +281,26 @@ function App() {
     }
   }, [volumeMax]);
 
+  const blockButton = () => {
+    setDisabled(true);
+  };
+
+  const unblockButton = () => {
+    setDisabled(false);
+  };
+
   useEffect(() => {
+    document.body.onkeyup = function (e) {
+      if (e.key === " " || e.code === "Space" || e.keyCode === 32) {
+        handleClick();
+      }
+    };
     const p = document.querySelector(".transcript");
     p?.addEventListener("animationstart", stopListening);
     p?.addEventListener("animationstart", playAudio);
+    p?.addEventListener("animationstart", blockButton);
     p?.addEventListener("animationend", finishPlay);
+    p?.addEventListener("animationend", unblockButton);
     if (pathname === "/admin-ladif") {
       setAdmin(true);
     }
@@ -347,10 +366,22 @@ function App() {
                 }}
               >
                 <img
-                  className={isListening ? "microphoneListening" : "microphone"}
+                  className={"microphone"}
                   src={microphoneImage}
                   alt="microphone"
-                  onClick={handleClick}
+                  style={
+                    disabled
+                      ? {
+                          display: "none",
+                        }
+                      : isListening
+                      ? {
+                          filter:
+                            "invert(14%) sepia(100%) saturate(3552%) hue-rotate(303deg) brightness(97%) contrast(115%) drop-shadow(0px 3px 3px #fff)",
+                        }
+                      : { cursor: "pointer" }
+                  }
+                  onClick={disabled ? null : handleClick}
                 ></img>
                 <div style={{ height: "32px" }}></div>
                 {admin && (
@@ -495,8 +526,8 @@ function App() {
               volumeRef.current >
                 Number(localStorage.getItem("volumeMinHit")) &&
               volumeRef.current < Number(localStorage.getItem("volumeMax"))
-                ? { left: "150px", top: "180px" }
-                : null
+                ? { left: "200px", top: "450px" }
+                : { left: "200px", top: "450px" }
             }
             className={`${hidden ? "hidden" : null} transcript ${
               volumeRef.current > Number(localStorage.getItem("volumeMax"))
