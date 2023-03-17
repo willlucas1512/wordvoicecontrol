@@ -120,7 +120,7 @@ p {
 .tube {
   z-index: 4;
   width: 200px;
-  height: 400px;
+  height: 300px;
   position: absolute;
   bottom: 0;
   left: 85%;
@@ -179,7 +179,7 @@ p {
   position: absolute;
   top: 0;
   left: 0;
-  transform: rotate(80deg);
+  transform: rotate(90deg);
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
   background: linear-gradient(
     to right,
@@ -236,12 +236,14 @@ p {
   position: absolute;
   width: 30px;
   height: 30px;
+  left: 150px;
+  top: 210px;
   color: #000;
   -webkit-text-stroke: 1px #000;
   // text-shadow: 2px 2px 4px #000;
 }
 .miss {
-  animation: x-motion-miss 3s linear 0s;
+  animation: x-motion-miss 5s linear 0s;
 }
 
 .missHigh {
@@ -259,7 +261,7 @@ p {
   top: 100%;
   font-size: 30px;
   font-family: "Varela Round", sans-serif;
-  animation: y-motion-miss 3s linear 0s;
+  animation: y-motion-miss 5s linear 0s;
 }
 
 .missHigh:before {
@@ -304,7 +306,7 @@ p {
 }
 @keyframes y {
   to {
-    top: 179.5px;
+    top: 209.5px;
   }
 }
 

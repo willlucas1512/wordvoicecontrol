@@ -25,13 +25,13 @@ function App() {
   queryString ? (lang = queryString.split("?")[1]) : (lang = "pt-br");
 
   const [volumeMin, setVolumeMin] = useState(
-    Number(localStorage.getItem("volumeMin"))
+    Number(localStorage.getItem("volumeMin") || 2)
   );
   const [volumeMinHit, setVolumeMinHit] = useState(
-    Number(localStorage.getItem("volumeMinHit"))
+    Number(localStorage.getItem("volumeMinHit") || 10)
   );
   const [volumeMax, setVolumeMax] = useState(
-    Number(localStorage.getItem("volumeMax"))
+    Number(localStorage.getItem("volumeMax") || 20)
   );
   const handleChangeMin = (event) => setVolumeMin(event.target.value);
   const handleChangeMinHit = (event) => setVolumeMinHit(event.target.value);
@@ -51,9 +51,8 @@ function App() {
       }
       that.instant = Math.sqrt(sum / input.length) * 100;
       console.log(that.instant);
-      that.instant > Number(localStorage.getItem("volumeMin")) &&
-        setVolume(that.instant);
-      if (that.instant > Number(localStorage.getItem("volumeMin"))) {
+      that.instant > 2 && setVolume(that.instant);
+      if (that.instant > 2) {
         volumeRef.current = that.instant;
       }
     };
@@ -149,17 +148,12 @@ function App() {
   };
 
   const finishPlay = () => {
-    if (
-      volumeRef.current > Number(localStorage.getItem("volumeMinHit")) &&
-      volumeRef.current < Number(localStorage.getItem("volumeMax"))
-    ) {
-      let utterance = new SpeechSynthesisUtterance(paragraphRef.current);
-      utterance.lang = "pt-BR";
+    let utterance = new SpeechSynthesisUtterance(paragraphRef.current);
+    utterance.lang = "pt-BR";
+    volumeRef.current > 10 &&
+      volumeRef.current < 20 &&
       speechSynthesis.speak(utterance);
-      paragraphRef.current = "";
-    } else {
-      setFallenWords(fallenWordsRef.current);
-    }
+    setFallenWords(fallenWordsRef.current);
     setVolume(0);
     setHidden(true);
   };
@@ -208,7 +202,7 @@ function App() {
       const xMinimoHit = xVolumeMinHit ? xVolumeMinHit : 10;
       const xVolumeMax = Number(localStorage.getItem("volumeMax"));
       const xMaximo = xVolumeMax ? xVolumeMax : 20;
-      if (volumeRef.current > xMaximo || volumeRef.current < xMinimoHit) {
+      if (volume > xMaximo || volume < xMinimoHit) {
         const xParagraph = transcript;
         const current = [...fallenWords];
         const x1stHalf = xParagraph.substring(
@@ -222,7 +216,7 @@ function App() {
         const xCurrentLengthBeforePush1 = current.length;
         current.push({
           text: x1stHalf,
-          position: `${volumeRef.current > xMaximo ? 96 : Math.random() * 50}%`,
+          position: `${volume > xMaximo ? 96 : Math.random() * 50}%`,
           rotation: `${Math.random() * 30}deg`,
           indice: xCurrentLengthBeforePush1,
         });
@@ -230,7 +224,7 @@ function App() {
         current.push({
           text: x2ndHalf,
           position: `${
-            volumeRef.current > xMaximo
+            volume > xMaximo
               ? 96 + (x2ndHalf.length * 9) / 4
               : Math.random() * 50 + (x2ndHalf.length * 9) / 4
           }%`,
@@ -256,24 +250,18 @@ function App() {
   useEffect(() => {
     if (volumeMin) {
       localStorage.setItem("volumeMin", volumeMin);
-    } else {
-      localStorage.setItem("volumeMin", 2);
     }
   }, [volumeMin]);
 
   useEffect(() => {
     if (volumeMinHit) {
       localStorage.setItem("volumeMinHit", volumeMinHit);
-    } else {
-      localStorage.setItem("volumeMinHit", 10);
     }
   }, [volumeMinHit]);
 
   useEffect(() => {
     if (volumeMax) {
       localStorage.setItem("volumeMax", volumeMax);
-    } else {
-      localStorage.setItem("volumeMax", 20);
     }
   }, [volumeMax]);
 
@@ -475,11 +463,10 @@ function App() {
                 </a>
               </p>
               {isListening && <p className={"listening"}>Escutando</p>}
-              {volumeRef.current > Number(localStorage.getItem("volumeMin")) &&
+              {(volume > Number(localStorage.getItem("volumeMin")) ||
+                volume > 2) &&
                 !isListening && (
-                  <p className={"volume"}>
-                    Volume: {Math.round(volumeRef.current)}
-                  </p>
+                  <p className={"volume"}>Volume: {Math.round(volume)}</p>
                 )}
             </div>
           </div>
@@ -491,19 +478,13 @@ function App() {
           </div>
           <p
             data-transcript={paragraph}
-            style={
-              volumeRef.current >
-                Number(localStorage.getItem("volumeMinHit")) &&
-              volumeRef.current < Number(localStorage.getItem("volumeMax"))
-                ? { left: "150px", top: "180px" }
-                : null
-            }
             className={`${hidden ? "hidden" : null} transcript ${
-              volumeRef.current > Number(localStorage.getItem("volumeMax"))
+              volume > Number(localStorage.getItem("volumeMax")) || volume > 20
                 ? "missHigh"
-                : volumeRef.current >
-                    Number(localStorage.getItem("volumeMinHit")) &&
-                  volumeRef.current < Number(localStorage.getItem("volumeMax"))
+                : (volume > Number(localStorage.getItem("volumeMinHit")) ||
+                    volume > 10) &&
+                  (volume < Number(localStorage.getItem("volumeMax")) ||
+                    volume < 20)
                 ? "hit"
                 : "miss"
             }`}
